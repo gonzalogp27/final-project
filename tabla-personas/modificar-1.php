@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Bartomeu Sintes Marco - bartolome.sintes+mclibre@gmail.com
- * @license https://www.gnu.org/licenses/agpl-3.0.txt AGPL 3 or later
- * @link https://www.mclibre.org
+ * @author    Bartolomé Sintes Marco - bartolome.sintes+mclibre@gmail.com
+ * @license   https://www.gnu.org/licenses/agpl-3.0.txt AGPL 3 or later
+ * @link      https://www.mclibre.org
  */
 
 require_once "../comunes/biblioteca.php";
@@ -17,53 +17,54 @@ if (!isset($_SESSION["conectado"])) {
 
 $pdo = conectaDb();
 
-cabecera("Modify artists 1");
+cabecera("Modify artist 1");
 
-// Checks if the database contains records
+
+// Comprobamos si la base de datos contiene registros
 $hayRegistrosOk = false;
 
 $consulta = "SELECT COUNT(*) FROM artistas";
 
 $resultado = $pdo->query($consulta);
 if (!$resultado) {
-    print "  <p class=\"aviso\">Error in the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+    print "    <p class=\"aviso\">Error on the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
 } elseif ($resultado->fetchColumn() == 0) {
-    print "  <p class=\"aviso\">No records have been created yet.</p>\n";
+    print "    <p class=\"aviso\">No record created yet.</p>\n";
 } else {
     $hayRegistrosOk = true;
 }
 
-// If all checks have been successful ...
+// Si todas las comprobaciones han tenido éxito ...
 if ($hayRegistrosOk) {
-    // Retrieve all records to display them in a <table>
+    // Recuperamos todos los registros para mostrarlos en una <table>
     $consulta = "SELECT * FROM artistas";
 
     $resultado = $pdo->query($consulta);
     if (!$resultado) {
-        print "  <p class=\"aviso\">Error in the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error en la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } else {
 ?>
-    <p>Select the record you want to modify:</p>
-    <form action="modificar-2.php" method="post">
-        <table class="conborde franjas">
-            <thead>
-                <tr>
-                    <th>Modify</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Active</th>
-                </tr>
-            </thead>
+      <p>Indique el registro que quiera modificar:</p>
+	<form action="modificar-2.php" method="post">
+      <table class="conborde franjas">
+        <thead>
+          <tr>
+            <th>Modify</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Active</th>
+          </tr>
+        </thead>
 <?php
         foreach ($resultado as $registro) {
-            print "  <tr>\n";
-            print "   <td class=\"centrado\"><input type=\"radio\" name=\"id\" value=\"$registro[id]\"></td>\n";
-            print "   <td>$registro[nombre]</td>\n";
-            print "   <td>$registro[apellidos]</td>\n";
-            print "   <td>$registro[telefono]</td>\n";
-            print "   <td>$registro[correo]</td>\n";
+            print "        <tr>\n";
+            print "          <td class=\"centrado\"><input type=\"radio\" name=\"id\" value=\"$registro[id]\"></td>\n";
+            print "          <td>$registro[nombre]</td>\n";
+            print "          <td>$registro[apellidos]</td>\n";
+            print "          <td>$registro[telefono]</td>\n";
+            print "          <td>$registro[correo]</td>\n";
             switch($registro["activo"]){
                 case 0:
                     print "<td>No</td>\n";
@@ -72,16 +73,17 @@ if ($hayRegistrosOk) {
                     print "<td>Yes</td>\n";
                     break;
             }
-            print "  </tr>\n";
+            print "        </tr>\n";
         }
-        print "  </table>\n";
+        print "      </table>\n";
         print "\n";
-        print "  <p>\n";
-        print "   <input type='submit' value='Modify record'>\n";
-        print "   <input type='reset' value='Reset form'>\n";
-        print "  </p>\n";
-        print "  </form>\n";
+        print "      <p>\n";
+        print "        <input type=\"submit\" value=\"Modify\">\n";
+        print "        <input type=\"reset\" value=\"Restart form\">\n";
+        print "      </p>\n";
+        print "    </form>\n";
     }
 }
 
 pie();
+?>

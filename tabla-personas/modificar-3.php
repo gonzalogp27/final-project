@@ -17,7 +17,7 @@ if (!isset($_SESSION["conectado"])) {
 
 $pdo = conectaDb();
 
-cabecera("Modify artists 3");
+cabecera("Personas - Modificar 3");
 
 $nombre    = recoge("nombre");
 $apellidos = recoge("apellidos");
@@ -36,7 +36,7 @@ switch($activo){
 
 
 if ($id == "") {
-    print "    <p class=\"aviso\">No artist selected.</p>\n";
+    print "    <p class=\"aviso\">No se ha seleccionado ningún registro.</p>\n";
 } else {
     $idOk = true;
 }
@@ -45,7 +45,7 @@ if ($id == "") {
 $registroNoVacioOk = false;
 
     if ($nombre == "" && $apellidos == "" && $telefono == "" && $correo == "" && $activo == "") {
-        print "    <p class=\"aviso\">You have to fill at least one field. The record was not sent.</p>\n";
+        print "    <p class=\"aviso\">Hay que rellenar al menos uno de los campos. No se ha guardado el registro.</p>\n";
         print "\n";
     } else {
         $registroNoVacioOk = true;
@@ -60,11 +60,11 @@ if ($idOk && $registroNoVacioOk) {
 
     $resultado = $pdo->prepare($consulta);
     if (!$resultado) {
-        print "    <p class=\"aviso\">Error preparing the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error al preparar la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } elseif (!$resultado->execute([":id" => $id])) {
-        print "    <p class=\"aviso\">Error preparing the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error al ejecutar la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } elseif ($resultado->fetchColumn() == 0) {
-        print "    <p class=\"aviso\">Record not found.</p>\n";
+        print "    <p class=\"aviso\">Registro no encontrado.</p>\n";
     } else {
         $registroEncontradoOk = true;
     }
@@ -79,17 +79,12 @@ if ($idOk && $registroNoVacioOk && $registroEncontradoOk) {
 
     $resultado = $pdo->prepare($consulta);
     if (!$resultado) {
-        print "    <p class=\"aviso\">Error preparing the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error al preparar la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } elseif (!$resultado->execute([":nombre" => $nombre, ":apellidos" => $apellidos, ":telefono" => $telefono, ":correo" => $correo, ":activo" => $activo, ":id" => $id])) {
-        print "    <p class=\"aviso\">Error executing the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error al ejecutar la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } else {
         print "    <p>Record modified correctly.</p>\n";
     }
-
-    $accion = "The data about $nombre $apellidos was modified";
-    registrarAccion($pdo, $accion);
-
-
 }
 
 pie();

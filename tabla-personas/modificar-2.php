@@ -17,7 +17,7 @@ if (!isset($_SESSION["conectado"])) {
 
 $pdo = conectaDb();
 
-cabecera("Modify artists 2");
+cabecera("Personas - Modificar 2");
 
 $id = recoge("id");
 
@@ -25,7 +25,7 @@ $id = recoge("id");
 $idOk = false;
 
 if ($id == "") {
-    print "    <p class=\"aviso\">No artist selected.</p>\n";
+    print "    <p class=\"aviso\">No se ha seleccionado ningún registro.</p>\n";
 } else {
     $idOk = true;
 }
@@ -39,11 +39,11 @@ if ($idOk) {
 
     $resultado = $pdo->prepare($consulta);
     if (!$resultado) {
-        print "    <p class=\"aviso\">Error preparing the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error al preparar la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } elseif (!$resultado->execute([":id" => $id])) {
-        print "    <p class=\"aviso\">Error executing the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error al ejecutar la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } elseif ($resultado->fetchColumn() == 0) {
-        print "    <p class=\"aviso\">Record not found.</p>\n";
+        print "    <p class=\"aviso\">Registro no encontrado.</p>\n";
     } else {
         $registroEncontradoOk = true;
     }
@@ -57,9 +57,9 @@ if ($idOk && $registroEncontradoOk) {
 
     $resultado = $pdo->prepare($consulta);
     if (!$resultado) {
-        print "    <p class=\"aviso\">Error preparing the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error al preparar la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } elseif (!$resultado->execute([":id" => $id])) {
-        print "    <p class=\"aviso\">Error executing the query. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
+        print "    <p class=\"aviso\">Error al ejecutar la consulta. SQLSTATE[{$pdo->errorCode()}]: {$pdo->errorInfo()[2]}</p>\n";
     } else {
         $registro = $resultado->fetch();
 
